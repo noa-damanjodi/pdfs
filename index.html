@@ -4,33 +4,11 @@
 <meta charset="UTF-8">
 <title>PDF List – NOA</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background: #f5f7ff;
-    }
-    h2 {
-        color: #2d4cc8;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-    li {
-        margin: 10px 0;
-        background: white;
-        padding: 12px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    a {
-        color: #003399;
-        font-weight: bold;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
+    body { font-family: Arial; background: #eef3ff; padding: 20px; }
+    h2 { color: #1b3bbb; }
+    ul { padding: 0; list-style: none; }
+    li { background: white; margin: 10px 0; padding: 12px; border-radius: 8px; }
+    a { text-decoration: none; color: #0033cc; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -39,28 +17,25 @@
 <ul id="pdfList">Loading…</ul>
 
 <script>
-// GitHub API URL for your repo
-const apiURL = "https://api.github.com/repos/noadamanjodi/pdfs/contents/";
+const apiURL = "https://api.github.com/repos/noadamanjodi/pdfs/contents/notices/";
 
 fetch(apiURL)
-  .then(response => response.json())
+  .then(res => res.json())
   .then(files => {
     const list = document.getElementById("pdfList");
     list.innerHTML = "";
 
     files.forEach(file => {
       if (file.name.toLowerCase().endsWith(".pdf")) {
+        const url = "https://notices.noadamanjodi.com/notices/" + encodeURIComponent(file.name);
         const li = document.createElement("li");
-        const url = "https://notices.noadamanjodi.com/" + encodeURIComponent(file.name);
-
         li.innerHTML = `<a href="${url}" target="_blank">${file.name}</a>`;
         list.appendChild(li);
       }
     });
   })
-  .catch(err => {
-    document.getElementById("pdfList").innerHTML = "Error loading PDFs.";
-    console.error(err);
+  .catch(() => {
+    document.getElementById("pdfList").innerHTML = "⚠ Unable to load PDFs.";
   });
 </script>
 
